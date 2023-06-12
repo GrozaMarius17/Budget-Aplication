@@ -60,4 +60,14 @@ public class TransactionService {
         report.put(BUY, transactions.stream().filter(transaction -> transaction.getType() == BUY).toList());
         return report;
     }
+
+    public Transaction replace(long id, double amount, String product, TransactionType type) {
+        Transaction oldTransaction = this.getById(id);
+        if(oldTransaction == null)
+            throw new RuntimeException("No such element exist");
+        transactions.remove(oldTransaction);
+        Transaction newTransaction = new Transaction(id, product, type, amount);
+        transactions.add(newTransaction);
+        return newTransaction;
+    }
 }

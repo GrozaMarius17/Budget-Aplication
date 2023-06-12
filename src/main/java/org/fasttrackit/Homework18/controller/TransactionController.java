@@ -45,6 +45,10 @@ public class TransactionController {
     }
 
     //PUT  /transactions/{id} - replaces the transaction with id
+    @PutMapping("/{id}")
+    public Transaction replaceTransaction(@PathVariable long id, @RequestBody CreateTransactionRequest transaction ) {
+       return transactionService.replace(id, transaction.amount(), transaction.product(), transaction.type());
+    }
     //
     //DELETE /transactions/{id} - deletes the transaction with id
     //
@@ -52,6 +56,7 @@ public class TransactionController {
     //
     //GET /transactions/reports/type -> returns a map from type to list of transactions of that type
     @GetMapping("/reports/type")
+
     public ReportByTypeResponse generateReportByType() {
         Map<TransactionType, List<Transaction>> reportByType = transactionService.getReportByType();
         return new ReportByTypeResponse(reportByType.get(TransactionType.SELL), reportByType.get(TransactionType.BUY));
